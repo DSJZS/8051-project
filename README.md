@@ -1,1 +1,2 @@
-# MCS-51-project
+# MCS-51-project  
+just a newbie  
