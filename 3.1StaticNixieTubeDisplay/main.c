@@ -22,8 +22,5 @@ void Nixie(unsigned char Location,unsigned char Number)
 void main()
 {
 	Nixie(2,3);
-	while(1)
-	{
-		
-	}
+	while(1);
 }
