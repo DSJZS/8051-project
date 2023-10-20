@@ -12,6 +12,6 @@ void main()
 	while(1)
 	{
 		LCD_ShowNum(1,1,result++,16);
-		Delay(1000);
+		Delay(result);
 	}
 }
