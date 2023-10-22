@@ -15,6 +15,9 @@ void UART_Init(void)
 	TH1 = 0xF4;			//设置定时重载值
 	ET1 = 0;			//禁止定时器中断
 	TR1 = 1;			//定时器1开始计时
+	
+	EA = 1;		//	启用中断
+	ES = 1;		//	启动串口中断
 }
 
 /**
@@ -30,3 +33,16 @@ void UART_SendByte(unsigned char Byte)
 	
 	TI=0;
 }
+
+
+/*	串口中断模板
+void UART_Rounting() interrupt 4
+{
+	if(RI==1)
+	{
+		P2 = SBUF;
+		UART_SendByte(SBUF);
+		RI = 0;
+	}
+}
+*/
