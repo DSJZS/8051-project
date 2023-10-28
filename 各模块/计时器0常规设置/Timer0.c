@@ -32,3 +32,18 @@ void Timer0_Init(void)		//1毫秒@11.0592MHz
 	ET0 = 1;		//	CPU对T0开放中断
 	PT0 = 0;	//	设置优先级为0(最低优先级)
 }
+
+//	计时器0中断函数模板
+//void Timer0_Routine(void) interrupt 1
+//{
+//	static unsigned int T0count;
+//
+//	TL0 = 0x66;				//设置定时初始值
+//	TH0 = 0xFC;				//设置定时初始值
+//	++T0count;
+//
+//	if(T0count % 1000 == 0)
+//	{
+//		T0count = 0;	
+//	}
+//}
