@@ -33,7 +33,7 @@ void Timer0_Init(void)		//1毫秒@11.0592MHz
 	PT0 = 0;	//	设置优先级为0(最低优先级)
 }
 
-//	计时器0中断函数模板
+//	计时器0中断函数模板，适用于 11.0592MHZ下每1ms的循环
 //void Timer0_Routine(void) interrupt 1
 //{
 //	static unsigned int T0count;
