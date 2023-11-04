@@ -6,7 +6,8 @@
   **/
 void I2C_Start(void)
 {
-	I2C_SDA = 1;	//	SCL低电平时才能变换数据
+	I2C_SDA = 1;	//	此处由于后续函数操作，SCL默认为0，而SDA不一定为1
+								//	因为SCL低电平时才能变换数据，所以这里先将其确保为1
 	I2C_SCL = 1;	//	数据变换后拉SCL高电平
 	I2C_SDA = 0;	//	在SCL为高电平时拉低SDA，启动
 	I2C_SCL = 0;	//	最后拉低SCL电平

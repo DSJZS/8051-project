@@ -38,6 +38,8 @@ void main()
 			Sec = AT24C02_ReadByte(1);			
 			MiniSec = AT24C02_ReadByte(2);	
 		}
+		if(KeyNum)
+			Buzzer_Time(500);
 		Nixie_SetBuf(1,Min/10);
 		Nixie_SetBuf(2,Min%10);
 		Nixie_SetBuf(3,11);
