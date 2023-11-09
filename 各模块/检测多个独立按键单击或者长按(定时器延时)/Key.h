@@ -19,10 +19,8 @@
 #define KEY_LP2	0x40	//	0100 0000
 #define KEY_LP3	0x20	//	0010 0000
 #define KEY_LP4	0x10	//	0001 0000
-//	长按响应时间(以Key_Loop函数执行次数记录)
-#define KEY_LP_RESPONSE 50
 
-unsigned char Key(void);
+unsigned char Key(unsigned char);
 void Key_Loop(void);
 
 #endif
