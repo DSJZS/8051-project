@@ -10,6 +10,7 @@ static struct MessageQueue{
 	MSG Data[QUEUE_CAP+1];	//	消息队列数据
 }MQ;
 
+
 /**
 	*@brief		判断消息队列是否为空
   *@param		无
@@ -19,6 +20,7 @@ static unsigned char MSG_isEmpty()
 {
 	return (MQ.front == MQ.rear);	//	利用头指针和尾指针的位置判断是否为空
 }
+
 
 /**
   *@brief		消息溢出处理函数
@@ -32,17 +34,6 @@ static unsigned char MSG_MQOverflow(MSG* M)
 	return 0;
 }
 
-/**
-  *@brief		初始化消息队列
-  *@param		无
-  *@retval	无
-  **/
-void MSG_InitQueue(void)
-{
-	MQ.Capacity = QUEUE_CAP;	//	设置容量大小
-	MQ.front = 0;	//	置零头指针	
-	MQ.rear = 0;	//	置零尾指针
-}
 
 /**
   *@brief		发出消息到消息队列
@@ -86,6 +77,7 @@ unsigned char MSG_SendMessage(MSG* M)
 	}
 }
 
+
 /**
   *@brief		接收消息队列对头消息
   *@param		msg	-	存放接收信息的结构体指针
@@ -100,6 +92,7 @@ unsigned char MSG_GetMessage(MSG* M)
 	return 1;
 }
 
+
 //	告知程序外部有MessageProc()函数
 extern void MessageProc(unsigned char message,unsigned char param,unsigned char count);
 /**
@@ -111,4 +104,28 @@ void MSG_PostMessage(MSG* M)
 {
 	//	将数据发送到消息处理函数
 	MessageProc(M->message,M->param,M->count);
+}
+
+/**
+  *@brief		发送消息队列初始化消息
+  *@param		无
+  *@retval	无
+  **/
+static void MSG_SendInitMessage(void)
+{
+	MSG msg = {	CM_Init,	0	,	1};
+	MQ.Data[MQ.rear] = msg;								//	将消息放入队列末尾
+	MQ.rear = (MQ.rear+1) % MQ.Capacity;	//	尾指针往后移动
+}
+/**
+  *@brief		初始化消息队列
+  *@param		无
+  *@retval	无
+  **/
+void MSG_InitQueue(void)
+{
+	MQ.Capacity = QUEUE_CAP;	//	设置容量大小
+	MQ.front = 0;	//	置零头指针	
+	MQ.rear = 0;	//	置零尾指针
+	MSG_SendInitMessage();	//	发送初始化消息
 }

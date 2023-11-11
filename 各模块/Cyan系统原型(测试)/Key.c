@@ -1,9 +1,11 @@
 #include "Key.h"
 
 /*	按键标识位，1-8位分别用于表示不同的按键消息
+	低四位由高到低分别表示独立按键1-4按下与否(1为按下，0为松开)
 */
 static unsigned char Key_Press=0;
 
+//	内部标识，用于按键按下松开的逻辑判断
 #define KEY_P1	0x01	//	0000 0001
 #define KEY_P2	0x02	//	0000 0010
 #define KEY_P3	0x04	// 	0000 0100
@@ -18,6 +20,7 @@ static unsigned char Key_GetState(void)
 {
 	unsigned char KeyNum=0;
 	
+	//	根据IO口是否为低电平来判断按键是否按下
 	if(P3_1 == 0){	KeyNum|=KEY_P1;	}
 	if(P3_0 == 0){	KeyNum|=KEY_P2;	}
 	if(P3_2 == 0){	KeyNum|=KEY_P3;	}
@@ -42,51 +45,51 @@ static void Key_SendMessage(void)
 	//	发出独立按键松开消息
 	if((LastState	& KEY_P1) && !(NowState & KEY_P1))
 	{	
-		msg.message = VK_INDBTN_UP;
-		msg.param = 1;
+		msg.message = CM_INDBTN_UP;
+		msg.param = VK_INDBTN1;	//	将消息参数置为虚拟键码
 		MSG_SendMessage(&msg);
 	}
 	if((LastState & KEY_P2) && !(NowState & KEY_P2))
 	{	
-		msg.message = VK_INDBTN_UP;
-		msg.param = 2;
+		msg.message = CM_INDBTN_UP;
+		msg.param = VK_INDBTN2;	//	将消息参数置为虚拟键码
 		MSG_SendMessage(&msg);
 	}
 	if((LastState & KEY_P3) && !(NowState & KEY_P3))
 	{	
-		msg.message = VK_INDBTN_UP;
-		msg.param = 3;
+		msg.message = CM_INDBTN_UP;
+		msg.param = VK_INDBTN3;	//	将消息参数置为虚拟键码
 		MSG_SendMessage(&msg);
 	}
 	if((LastState & KEY_P4) && !(NowState & KEY_P4))
 	{	
-		msg.message = VK_INDBTN_UP;
-		msg.param = 4;
+		msg.message = CM_INDBTN_UP;
+		msg.param = VK_INDBTN4;	//	将消息参数置为虚拟键码
 		MSG_SendMessage(&msg);
 	}
 	//	发出独立按键按下消息
 	if(NowState & KEY_P1)
 	{	
-		msg.message = VK_INDBTN_DOWN;
-		msg.param = 1;
+		msg.message = CM_INDBTN_DOWN;
+		msg.param = VK_INDBTN1;	//	将消息参数置为虚拟键码
 		MSG_SendMessage(&msg);
 	}
 	if(NowState & KEY_P2)
 	{	
-		msg.message = VK_INDBTN_DOWN;
-		msg.param = 2;
+		msg.message = CM_INDBTN_DOWN;
+		msg.param = VK_INDBTN2;	//	将消息参数置为虚拟键码
 		MSG_SendMessage(&msg);
 	}
 	if(NowState & KEY_P3)
 	{	
-		msg.message = VK_INDBTN_DOWN;
-		msg.param = 3;
+		msg.message = CM_INDBTN_DOWN;
+		msg.param = VK_INDBTN3;	//	将消息参数置为虚拟键码
 		MSG_SendMessage(&msg);
 	}
 	if(NowState & KEY_P4)
 	{	
-		msg.message = VK_INDBTN_DOWN;
-		msg.param = 4;
+		msg.message = CM_INDBTN_DOWN;
+		msg.param = VK_INDBTN4;	//	将消息参数置为虚拟键码
 		MSG_SendMessage(&msg);
 	}
 }
@@ -98,5 +101,5 @@ static void Key_SendMessage(void)
   **/
 void Key_Loop(void)
 {
-	Key_SendMessage();
+	Key_SendMessage();	//	调用按键信息发送函数
 }

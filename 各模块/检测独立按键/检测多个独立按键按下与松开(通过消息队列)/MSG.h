@@ -10,7 +10,7 @@ typedef struct TagMSG{
 
 //	消息枚举
 enum CyanMessage{
-	CM_Init = 0,		//	初始化
+	CM_Init = 0,		//	消息队列(也是Cyan系统)初始化
 	CM_INDBTN_DOWN,	//	独立按键按下
 	CM_INDBTN_UP,		//	独立按键松开
 	CM_MATKEY_DOWN,	//	矩阵键盘按下
