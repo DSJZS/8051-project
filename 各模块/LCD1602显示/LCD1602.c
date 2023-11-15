@@ -8,16 +8,16 @@ sbit LCD_EN=P2^7;
 
 //函数定义：
 /**
-  * @brief  LCD1602延时函数，12MHz调用可延时1ms
+  * @brief  LCD1602延时函数，11.0592MHz调用可延时1ms
   * @param  无
   * @retval 无
   */
-void LCD_Delay()
+static void LCD_Delay(void)
 {
-	unsigned char i, j;
-
+	unsigned char data i, j;
+	_nop_();
 	i = 2;
-	j = 239;
+	j = 199;
 	do
 	{
 		while (--j);
@@ -31,13 +31,13 @@ void LCD_Delay()
   */
 void LCD_WriteCommand(unsigned char Command)
 {
-	LCD_RS=0;
-	LCD_RW=0;
-	LCD_DataPort=Command;
-	LCD_EN=1;
-	LCD_Delay();
-	LCD_EN=0;
-	LCD_Delay();
+	LCD_RS = 0;							//	RS置低电平表示指令
+	LCD_RW = 0;							//	WR置低电平表示写入
+	LCD_DataPort = Command;	//	将要写入的指令放到数据端口上
+	LCD_EN = 1;							//	使数据有效(送入数据)
+	LCD_Delay();						//	延时使数据能够完整写入
+	LCD_EN = 0;							//	执行命令
+	LCD_Delay();						//	延时使数据能够完整写入
 }
 
 /**
@@ -47,13 +47,13 @@ void LCD_WriteCommand(unsigned char Command)
   */
 void LCD_WriteData(unsigned char Data)
 {
-	LCD_RS=1;
-	LCD_RW=0;
-	LCD_DataPort=Data;
-	LCD_EN=1;
-	LCD_Delay();
-	LCD_EN=0;
-	LCD_Delay();
+	LCD_RS = 1;							//	RS置高电平表示数据
+	LCD_RW = 0;							//	WR置低电平表示写入
+	LCD_DataPort = Data;		//	将要写入的数据放到数据端口上
+	LCD_EN = 1;							//	使数据有效(送入数据)
+	LCD_Delay();						//	延时使数据能够完整写入
+	LCD_EN = 0;							//	执行命令
+	LCD_Delay();						//	延时使数据能够完整写入
 }
 
 /**
@@ -66,7 +66,7 @@ void LCD_SetCursor(unsigned char Line,unsigned char Column)
 {
 	if(Line==1)
 	{
-		LCD_WriteCommand(0x80|(Column-1));
+		LCD_WriteCommand(0x80|(Column-1));	
 	}
 	else if(Line==2)
 	{
@@ -96,8 +96,8 @@ void LCD_Init()
   */
 void LCD_ShowChar(unsigned char Line,unsigned char Column,char Char)
 {
-	LCD_SetCursor(Line,Column);
-	LCD_WriteData(Char);
+	LCD_SetCursor(Line,Column);	//	设置光标位置
+	LCD_WriteData(Char);	//	写入数据
 }
 
 /**
@@ -110,10 +110,10 @@ void LCD_ShowChar(unsigned char Line,unsigned char Column,char Char)
 void LCD_ShowString(unsigned char Line,unsigned char Column,char *String)
 {
 	unsigned char i;
-	LCD_SetCursor(Line,Column);
+	LCD_SetCursor(Line,Column);	//	设置光标位置
 	for(i=0;String[i]!='\0';i++)
 	{
-		LCD_WriteData(String[i]);
+		LCD_WriteData(String[i]);	//	写入数据
 	}
 }
 
@@ -142,10 +142,10 @@ int LCD_Pow(int X,int Y)
 void LCD_ShowNum(unsigned char Line,unsigned char Column,unsigned int Number,unsigned char Length)
 {
 	unsigned char i;
-	LCD_SetCursor(Line,Column);
+	LCD_SetCursor(Line,Column);	//	设置光标位置
 	for(i=Length;i>0;i--)
 	{
-		LCD_WriteData(Number/LCD_Pow(10,i-1)%10+'0');
+		LCD_WriteData(Number/LCD_Pow(10,i-1)%10+'0');	//	写入数据
 	}
 }
 
@@ -160,21 +160,21 @@ void LCD_ShowNum(unsigned char Line,unsigned char Column,unsigned int Number,uns
 void LCD_ShowSignedNum(unsigned char Line,unsigned char Column,int Number,unsigned char Length)
 {
 	unsigned char i;
-	unsigned int Number1;
-	LCD_SetCursor(Line,Column);
+	unsigned int num;
+	LCD_SetCursor(Line,Column);	//	设置光标位置
 	if(Number>=0)
 	{
-		LCD_WriteData('+');
-		Number1=Number;
+		LCD_WriteData('+');	
+		num=Number;
 	}
 	else
 	{
 		LCD_WriteData('-');
-		Number1=-Number;
+		num=-Number;
 	}
 	for(i=Length;i>0;i--)
 	{
-		LCD_WriteData(Number1/LCD_Pow(10,i-1)%10+'0');
+		LCD_WriteData(num/LCD_Pow(10,i-1)%10+'0');
 	}
 }
 
@@ -189,7 +189,7 @@ void LCD_ShowSignedNum(unsigned char Line,unsigned char Column,int Number,unsign
 void LCD_ShowHexNum(unsigned char Line,unsigned char Column,unsigned int Number,unsigned char Length)
 {
 	unsigned char i,SingleNumber;
-	LCD_SetCursor(Line,Column);
+	LCD_SetCursor(Line,Column);	//	设置光标位置
 	for(i=Length;i>0;i--)
 	{
 		SingleNumber=Number/LCD_Pow(16,i-1)%16;
@@ -215,7 +215,7 @@ void LCD_ShowHexNum(unsigned char Line,unsigned char Column,unsigned int Number,
 void LCD_ShowBinNum(unsigned char Line,unsigned char Column,unsigned int Number,unsigned char Length)
 {
 	unsigned char i;
-	LCD_SetCursor(Line,Column);
+	LCD_SetCursor(Line,Column);	//	设置光标位置
 	for(i=Length;i>0;i--)
 	{
 		LCD_WriteData(Number/LCD_Pow(2,i-1)%2+'0');
