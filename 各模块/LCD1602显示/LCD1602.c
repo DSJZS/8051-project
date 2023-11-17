@@ -1,4 +1,5 @@
 #include <REGX52.H>
+#include "INTRINS.H"
 
 //引脚配置：
 sbit LCD_RS=P2^6;
