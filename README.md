@@ -1,2 +1,2 @@
-# MCU51-project  
+# 8051-project  
 just a newbie  
